@@ -9,6 +9,10 @@ public abstract class Notification(Guid userId, string content, NotificationType
 
 	public abstract string GetMessage();
 
+	public string GetNotificationInfo() {
+		return $"UserId: {UserId}, Type: {Type}";
+	}
+
 	public override string DescribeRecord() {
 		return $"{base.DescribeRecord()}\nNotification: UserId: {UserId}, Type: {Type}, Content: {Content}, IsRead: {IsRead}";
 	}

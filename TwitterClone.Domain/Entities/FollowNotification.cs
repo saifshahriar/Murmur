@@ -1,6 +1,7 @@
 namespace TwitterClone.Domain.Entities;
 
-public sealed class FollowNotification(Guid userId, Guid followerId) : Notification
+public sealed class FollowNotification(Guid userId, Guid followerId) :
+    Notification
 (userId, "Follow", NotificationType.Follow) {
 	public Guid FollowerId { get; set; } = followerId;
 
