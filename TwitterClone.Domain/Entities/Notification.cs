@@ -1,8 +1,9 @@
 namespace TwitterClone.Domain.Entities;
 
-public abstract class Notification(Guid userId, string content, NotificationType type) : BaseEntity
+public abstract class Notification(Guid userId, string content,
+                                   NotificationType type) : BaseEntity
 (Guid.NewGuid()) {
-	public Guid             UserId { get; } = userId;
+	public Guid             UserId { get; }            = userId;
 	public NotificationType Type { get; private set; } = type;
 	public string           Content { set; get; }      = content;
 	public bool             IsRead { get; set; }       = false;

@@ -1,6 +1,7 @@
 namespace TwitterClone.Domain.Entities;
 
-public sealed class MentionNotification(Guid userId, Guid tweetId) : Notification
+public sealed class MentionNotification(Guid userId, Guid tweetId) :
+    Notification
 (userId, "Mention", NotificationType.Mention) {
 	public Guid TweetId { get; set; } = tweetId;
 

@@ -1,6 +1,7 @@
 namespace TwitterClone.Domain.Entities;
 
-public sealed class RetweetNotification(Guid userId, Guid tweetId) : Notification
+public sealed class RetweetNotification(Guid userId, Guid tweetId) :
+    Notification
 (userId, "Retweet", NotificationType.Retweet) {
 	public Guid TweetId { get; set; } = tweetId;
 

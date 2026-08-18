@@ -1,6 +1,7 @@
 namespace TwitterClone.Domain.Entities;
 
-public sealed class CommentNotification(Guid userId, Guid commentByUserId) : Notification
+public sealed class CommentNotification(Guid userId, Guid commentByUserId) :
+    Notification
 (userId, "Comment", NotificationType.Comment) {
 	public Guid   CommentByUserId { get; set; } = commentByUserId;
 	public string Message { get; set; }         = string.Empty;
