@@ -7,5 +7,6 @@ public enum NotificationType {
 	Mention,
 	Reply,
 	Message,
-	Comment
+	Comment,
+	System
 }
