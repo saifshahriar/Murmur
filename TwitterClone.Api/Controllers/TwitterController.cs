@@ -6,20 +6,16 @@ namespace TwitterClone.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class TwitterController(IConfiguration configuration) : ControllerBase {
-	private void GetTweet() {
-		var connectionString =
-		    configuration.GetValue<string>("Logging:LogLevel:Default") ?? "";
-		Console.WriteLine(connectionString);
-	}
-
-	[HttpGet]
+	[HttpGet("tweets")]
 	public IActionResult GetTweets() {
+		var maxLength = configuration.GetValue<int>("TwitterSettings:MaxTweetLength");
+
 		var tweets = new List<Tweet> {
 			new("Hello, TwitterClone!"),
 			new("Building something cool with ASP.NET Core."),
 			new("C# is actually pretty nice."),
 		};
 
-		return Ok(tweets);
+		return Ok(new { maxLength, tweets });
 	}
 }
