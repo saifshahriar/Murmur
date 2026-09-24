@@ -35,6 +35,46 @@ public class NotificationsController : ControllerBase {
 		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
 	}
 
+	[HttpPost("like")]
+	public IActionResult CreateLikeNotification([FromBody] LikeNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("retweet")]
+	public IActionResult CreateRetweetNotification([FromBody] RetweetNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("follow")]
+	public IActionResult CreateFollowNotification([FromBody] FollowNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("mention")]
+	public IActionResult CreateMentionNotification([FromBody] MentionNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("reply")]
+	public IActionResult CreateReplyNotification([FromBody] ReplyNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("message")]
+	public IActionResult CreateMessageNotification([FromBody] DirectMessageNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("comment")]
+	public IActionResult CreateCommentNotification([FromBody] CommentNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
+	[HttpPost("system")]
+	public IActionResult CreateSystemNotification([FromBody] SystemNotification notification) {
+		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	}
+
 	[HttpPatch("{id:guid}/read")]
 	public IActionResult MarkAsRead(Guid id) {
 		return NoContent();
