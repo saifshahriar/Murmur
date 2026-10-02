@@ -1,21 +1,65 @@
 using Microsoft.AspNetCore.Mvc;
+using TwitterClone.Api.Data;
+using TwitterClone.Api.Dtos;
 using TwitterClone.Domain.Entities;
 
 namespace TwitterClone.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TwitterController(IConfiguration configuration) : ControllerBase {
-	[HttpGet("tweets")]
+public class TwitterController(TweetRepository tweetRepository) : ControllerBase {
+	[HttpPost]
+	public IActionResult CreateTweet([FromBody] CreateTweetDto createTweetDto) {
+		var userId  = createTweetDto.UserId;
+		var content = createTweetDto.Content;
+
+		if (string.IsNullOrWhiteSpace(content))
+			return BadRequest("Content is required");
+
+		var tweet        = new Tweet(content) { };
+		var createdTweet = tweetRepository.AddTweet(tweet);
+		return Ok(TweetDto.FromTweet(createdTweet));
+	}
+
+	[HttpDelete("{id:guid}")]
+	public IActionResult DeleteTweetById([FromRoute] Guid id) {
+		var tweet = tweetRepository.GetTweetById(id);
+
+		if (tweet == null)
+			return NotFound();
+
+		return Ok(tweetRepository.DeleteTweet(tweet));
+	}
+
+	[HttpGet("{id:guid}")]
+	public IActionResult GetTweetById([FromRoute] Guid id) {
+		var tweet = tweetRepository.GetTweetById(id);
+
+		if (tweet == null)
+			return NotFound();
+
+		return Ok(TweetDto.FromTweet(tweet));
+	}
+
+	[HttpGet]
 	public IActionResult GetTweets() {
-		var maxLength = configuration.GetValue<int>("TwitterSettings:MaxTweetLength");
+		var tweets = tweetRepository.GetTweets();
+		return Ok(tweets.Select(TweetDto.FromTweet));
+	}
 
-		var tweets = new List<Tweet> {
-			new("Hello, TwitterClone!"),
-			new("Building something cool with ASP.NET Core."),
-			new("C# is actually pretty nice."),
-		};
+	[HttpPut("{id:guid}")]
+	public IActionResult
+	UpdateTweetById([FromRoute] Guid           id,
+	                [FromBody] UpdateTweetDto  updateTweetDto) {
+		var tweet = tweetRepository.GetTweetById(id);
 
-		return Ok(new { maxLength, tweets });
+		if (tweet == null)
+			return NotFound();
+
+		tweet.Content = updateTweetDto.Content;
+
+		var updatedTweet = tweetRepository.UpdateTweet(tweet);
+
+		return Ok(TweetDto.FromTweet(updatedTweet));
 	}
 }
