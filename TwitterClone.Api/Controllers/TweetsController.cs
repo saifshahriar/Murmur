@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using TwitterClone.Api.Data;
-using TwitterClone.Api.Dtos;
+using TwitterClone.Infrastructure.Data;
+using TwitterClone.Application.Dtos;
 using TwitterClone.Domain.Entities;
 
 namespace TwitterClone.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TwitterController(TweetRepository tweetRepository) : ControllerBase {
+public class TweetsController(TweetRepository tweetRepository) :
+    ControllerBase {
 	[HttpPost]
 	public IActionResult CreateTweet([FromBody] CreateTweetDto createTweetDto) {
 		var userId  = createTweetDto.UserId;
@@ -16,7 +17,7 @@ public class TwitterController(TweetRepository tweetRepository) : ControllerBase
 		if (string.IsNullOrWhiteSpace(content))
 			return BadRequest("Content is required");
 
-		var tweet        = new Tweet(content) { };
+		var tweet        = new Tweet(content) {};
 		var createdTweet = tweetRepository.AddTweet(tweet);
 		return Ok(TweetDto.FromTweet(createdTweet));
 	}
@@ -49,8 +50,8 @@ public class TwitterController(TweetRepository tweetRepository) : ControllerBase
 
 	[HttpPut("{id:guid}")]
 	public IActionResult
-	UpdateTweetById([FromRoute] Guid           id,
-	                [FromBody] UpdateTweetDto  updateTweetDto) {
+	UpdateTweetById([FromRoute] Guid          id,
+	                [FromBody] UpdateTweetDto updateTweetDto) {
 		var tweet = tweetRepository.GetTweetById(id);
 
 		if (tweet == null)
