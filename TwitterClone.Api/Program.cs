@@ -1,4 +1,4 @@
-using TwitterClone.Api.Data;
+using TwitterClone.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,4 @@
-namespace TwitterClone.Api.Dtos;
+namespace TwitterClone.Application.Dtos;
 
 public class UpdateUserDto {
 	public required string FirstName { get; set; }

@@ -1,6 +1,6 @@
 using TwitterClone.Domain.Entities;
 
-namespace TwitterClone.Api.Data;
+namespace TwitterClone.Infrastructure.Data;
 
 public class UserRepository {
 	private List<User> _users { get; set; } = [];

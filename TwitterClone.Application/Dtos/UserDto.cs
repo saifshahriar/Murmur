@@ -1,6 +1,6 @@
 using TwitterClone.Domain.Entities;
 
-namespace TwitterClone.Api.Dtos;
+namespace TwitterClone.Application.Dtos;
 
 public class UserDto(Guid id, string firstName, string lastName,
                      string userName, string email) {

@@ -6,9 +6,11 @@
     <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3"></PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwitterClone.Domain\TwitterClone.Domain.csproj" />
+    <ProjectReference Include="..\TwitterClone.Application\TwitterClone.Application.csproj"></ProjectReference>
+    <ProjectReference Include="..\TwitterClone.Domain\TwitterClone.Domain.csproj"></ProjectReference>
+    <ProjectReference Include="..\TwitterClone.Infrastructure\TwitterClone.Infrastructure.csproj"></ProjectReference>
   </ItemGroup>
 </Project>
