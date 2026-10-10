@@ -1,8 +1,9 @@
 using TwitterClone.Domain.Entities;
+using TwitterClone.Application.Interfaces;
 
-namespace TwitterClone.Infrastructure.Data;
+namespace TwitterClone.Infrastructure.Repositories;
 
-public class UserRepository {
+public class UserRepository : IUserRepository {
 	private List<User> _users { get; set; } = [];
 
 	public User AddUser(User user) {
