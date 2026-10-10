@@ -12,10 +12,11 @@ builder.Services.AddSwaggerGen();
 
 // Repo registration
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
-// builder.Services.AddSingleton<TweetRepository>();
+builder.Services.AddSingleton<ITweetRepository, TweetRepository>();
 
 // Services registration
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<ITweetService, TweetService>();
 
 var app = builder.Build();
 

@@ -1,8 +1,9 @@
+using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
 
-namespace TwitterClone.Infrastructure.Data;
+namespace TwitterClone.Infrastructure.Repositories;
 
-public class TweetRepository {
+public class TweetRepository : ITweetRepository {
 	private List<Tweet> _tweets { get; set; } = [];
 
 	public Tweet AddTweet(Tweet tweet) {
