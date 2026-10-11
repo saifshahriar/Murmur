@@ -42,12 +42,11 @@ public class UsersController(IUserService userService) : ControllerBase {
 	public IActionResult
 	UpdateUserById([FromRoute] Guid         id,
 	               [FromBody] UpdateUserDto updateUserDto) {
-		return Ok();
-		// var user = userService.GetUserById(id);
-		//
-		// if (user == null)
-		// 	return NotFound();
-		//
-		// return Ok();
+		var user = userService.UpdateUser(id, updateUserDto);
+
+		if (user == null)
+			return NotFound();
+
+		return Ok(user);
 	}
 }
