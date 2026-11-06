@@ -13,8 +13,10 @@ builder.Services.AddSwaggerGen();
 // Repo registration
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ITweetRepository, TweetRepository>();
+builder.Services.AddSingleton<IBookmarkRepository, BookmarkRepository>();
 
 // Services registration
+builder.Services.AddSingleton<IBookmarkService, BookmarkService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<ITweetService, TweetService>();
 
