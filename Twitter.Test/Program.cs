@@ -17,7 +17,7 @@ foreach(var notification in notifications) {
 	Console.WriteLine();
 }
 
-Tweet likeableTweet = new("This is another tweet!");
+Tweet likeableTweet = new(Guid.NewGuid(), "This is another tweet!");
 Console.WriteLine($"Can be liked: {likeableTweet.CanBeLiked()}");
 Console.WriteLine();
 

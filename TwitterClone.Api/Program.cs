@@ -16,6 +16,7 @@ builder.Services.AddSingleton<ITweetRepository, TweetRepository>();
 builder.Services.AddSingleton<IBookmarkRepository, BookmarkRepository>();
 builder.Services.AddSingleton<IFollowRepository, FollowRepository>();
 builder.Services.AddSingleton<ILikeRepository, LikeRepository>();
+builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
 
 // Services registration
 builder.Services.AddSingleton<IBookmarkService, BookmarkService>();
@@ -23,6 +24,7 @@ builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<ITweetService, TweetService>();
 builder.Services.AddSingleton<IFollowService, FollowService>();
 builder.Services.AddSingleton<ILikeService, LikeService>();
+builder.Services.AddSingleton<IMessageService, MessageService>();
 
 var app = builder.Build();
 
