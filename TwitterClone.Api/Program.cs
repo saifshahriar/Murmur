@@ -14,11 +14,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ITweetRepository, TweetRepository>();
 builder.Services.AddSingleton<IBookmarkRepository, BookmarkRepository>();
+builder.Services.AddSingleton<IFollowRepository, FollowRepository>();
 
 // Services registration
 builder.Services.AddSingleton<IBookmarkService, BookmarkService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<ITweetService, TweetService>();
+builder.Services.AddSingleton<IFollowService, FollowService>();
 
 var app = builder.Build();
 
