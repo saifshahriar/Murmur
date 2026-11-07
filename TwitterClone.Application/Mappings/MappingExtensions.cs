@@ -9,4 +9,14 @@ public static class MappingExtensions {
 			                     TweetId   = bookmark.TweetId,
 			                     CreatedAt = bookmark.CreatedAt };
 	}
+
+	public static UserDto ToDto(this User user) {
+		return UserDto.FromUser(user);
+	}
+
+	public static FollowDto ToDto(this Follow follow) {
+		return new FollowDto { Id = follow.Id, FollowerId = follow.FollowerId,
+			                   FollowingId = follow.FollowingId,
+			                   CreatedAt   = follow.CreatedAt };
+	}
 }

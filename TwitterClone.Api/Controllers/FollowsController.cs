@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TwitterClone.Application.Dtos;
+using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
 
 namespace TwitterClone.Api.Controllers;
@@ -7,16 +9,13 @@ namespace TwitterClone.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class FollowsController : ControllerBase {
+public class FollowsController(IFollowService followService) : ControllerBase {
+	// GET /api/follows?followerId={followerId}&followingId={followingId}
 	[HttpGet]
-	public IActionResult GetFollows() {
-		var follows = new List<Follow> {
-			new(),
-			new(),
-			new(),
-		};
-
-		return Ok(follows);
+	[ProducesResponseType(typeof(List<FollowDto>), StatusCodes.Status200OK)]
+	public IActionResult GetFollows([FromQuery] Guid? followerId,
+	                                [FromQuery] Guid? followingId) {
+		return Ok(followService.GetFollows(followerId, followingId));
 	}
 
 	[HttpGet("{id:guid}")]
@@ -27,11 +26,10 @@ public class FollowsController : ControllerBase {
 
 	[HttpPost]
 	public IActionResult CreateFollow([FromBody] Follow follow) {
-		return CreatedAtAction(nameof(GetFollowById), new { id = follow.Id }, follow);
+		return CreatedAtAction(nameof(GetFollowById), new { id = follow.Id },
+		                       follow);
 	}
 
 	[HttpDelete("{id:guid}")]
-	public IActionResult DeleteFollow(Guid id) {
-		return NoContent();
-	}
+	public IActionResult DeleteFollow(Guid id) { return NoContent(); }
 }
