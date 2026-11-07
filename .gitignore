@@ -39,6 +39,10 @@ ScaffoldingReadMe.txt
 # dotenv environment variables file
 .env
 
+# Local app settings (contain secrets - use *.template copies)
+TwitterClone.Api/appsettings.json
+TwitterClone.Api/appsettings.Development.json
+
 # Others
 ~$*
 *~

@@ -1,0 +1,14 @@
+{
+	"Logging": {
+		"LogLevel": {
+			"Default": "Information",
+			"Microsoft.AspNetCore": "Warning"
+		}
+	},
+	"TwitterSettings": {
+		"AppName": "TwitterStack Dev"
+	},
+	"ConnectionStrings": {
+		"DefaultConnection": "<YOUR_CONNECTION_STRING_HERE>"
+	}
+}

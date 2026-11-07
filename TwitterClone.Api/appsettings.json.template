@@ -11,6 +11,6 @@
 		"AppName": "TwitterStack"
 	},
 	"ConnectionStrings": {
-		"DefaultConnection": "Host=ep-gentle-scene-b329y1i3.c-4.ap-southeast-1.aws.neon.tech; Database=murmur; Username=neondb_owner; Password=npg_wySXDq58QZea; SSL Mode=VerifyFull; Channel Binding=Require;"
+		"DefaultConnection": "<YOUR_CONNECTION_STRING_HERE>"
 	}
 }
