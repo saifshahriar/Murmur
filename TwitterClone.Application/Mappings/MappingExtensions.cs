@@ -68,4 +68,11 @@ public static class MappingExtensions {
 			                         IsRead = notification.IsRead,
 			                         CreatedAt = notification.CreatedAt };
 	}
+
+	public static RetweetDto ToDto(this Retweet retweet) {
+		return new RetweetDto { Id = retweet.Id, UserId = retweet.UserId,
+			                     TweetId = retweet.TweetId,
+			                     Content = retweet.Content,
+			                     CreatedAt = retweet.CreatedAt };
+	}
 }
