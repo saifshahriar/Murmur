@@ -8,7 +8,7 @@ public class Follow : BaseEntity {
 		FollowingId = followingId;
 	}
 
-	public Guid FollowerId  { get; private set; }
+	public Guid FollowerId { get; private set; }
 	public Guid FollowingId { get; private set; }
 
 	public override string DescribeRecord() {

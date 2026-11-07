@@ -9,5 +9,8 @@
 	"TwitterSettings": {
 		"MaxTweetLength": 280,
 		"AppName": "TwitterStack"
+	},
+	"ConnectionStrings": {
+		"DefaultConnection": "<YOUR_CONNECTION_STRING_HERE>"
 	}
 }

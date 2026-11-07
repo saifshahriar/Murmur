@@ -1,27 +1,30 @@
 using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
+using TwitterClone.Infrastructure.Persistence;
 
 namespace TwitterClone.Infrastructure.Repositories;
 
-public class TweetRepository : ITweetRepository {
-	private List<Tweet> _tweets { get; set; } = [];
-
+public class TweetRepository(TwitterCloneDbContext context) : ITweetRepository {
 	public Tweet AddTweet(Tweet tweet) {
-		_tweets.Add(tweet);
+		context.Tweets.Add(tweet);
+		context.SaveChanges();
 		return tweet;
 	}
 
-	public bool DeleteTweet(Tweet tweet) { return _tweets.Remove(tweet); }
-
-	public Tweet? GetTweetById(Guid id) {
-		return _tweets.SingleOrDefault(e => e.Id == id);
+	public bool DeleteTweet(Tweet tweet) {
+		context.Tweets.Remove(tweet);
+		return context.SaveChanges() == 1;
 	}
 
-	public List<Tweet> GetTweets() { return _tweets; }
+	public Tweet? GetTweetById(Guid id) {
+		return context.Tweets.SingleOrDefault(e => e.Id == id);
+	}
+
+	public List<Tweet> GetTweets() { return [..context.Tweets]; }
 
 	public Tweet UpdateTweet(Tweet tweet) {
-		_tweets.RemoveAll(e => e.Id == tweet.Id);
-		_tweets.Add(tweet);
+		context.Tweets.Update(tweet);
+		context.SaveChanges();
 		return tweet;
 	}
 }

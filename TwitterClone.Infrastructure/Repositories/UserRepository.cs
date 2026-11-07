@@ -1,35 +1,35 @@
 using TwitterClone.Domain.Entities;
 using TwitterClone.Application.Interfaces;
+using TwitterClone.Infrastructure.Persistence;
 
 namespace TwitterClone.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository {
-	private List<User> _users { get; set; } = [];
-
+public class UserRepository(TwitterCloneDbContext context) : IUserRepository {
 	public User AddUser(User user) {
-		_users.Add(user);
+		context.Users.Add(user);
+		context.SaveChanges();
 		return user;
 	}
 
-	public bool DeleteUser(User user) { return _users.Remove(user); }
-
-	public User? GetUserById(Guid id) {
-		return _users.SingleOrDefault(e => e.Id == id);
+	public bool DeleteUser(User user) {
+		context.Users.Remove(user);
+		return context.SaveChanges() == 1;
 	}
 
-	public User? GetUserByEmail(string email) {
-		return _users.SingleOrDefault(e => e.Email == email);
-	}
+	public User? GetUserById(Guid id) => context.Users.SingleOrDefault(u => u.Id
+	                                                                     == id);
 
-	public User? GetUserByUserName(string userName) {
-		return _users.SingleOrDefault(e => e.UserName == userName);
-	}
+	public User? GetUserByEmail(string email) =>
+	    context.Users.SingleOrDefault(e => e.Email == email);
 
-	public List<User> GetUsers() { return _users; }
+	public User? GetUserByUserName(string userName) =>
+	    context.Users.SingleOrDefault(e => e.UserName == userName);
+
+	public List<User> GetUsers() => [..context.Users];
 
 	public User UpdateUser(User user) {
-		_users.RemoveAll(e => e.Id == user.Id);
-		_users.Add(user);
+		context.Users.Update(user);
+		context.SaveChanges();
 		return user;
 	}
 }

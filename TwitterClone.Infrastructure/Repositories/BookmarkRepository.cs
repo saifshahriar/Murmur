@@ -1,39 +1,46 @@
-using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
+using TwitterClone.Application.Interfaces;
+using TwitterClone.Infrastructure.Persistence;
 
 namespace TwitterClone.Infrastructure.Repositories;
 
-public class BookmarkRepository : IBookmarkRepository {
-	private readonly List<Bookmark> _bookmarks = [];
-
+public class BookmarkRepository(TwitterCloneDbContext context) :
+    IBookmarkRepository {
 	public Bookmark AddBookmark(Bookmark bookmark) {
-		_bookmarks.Add(bookmark);
+		context.Bookmarks.Add(bookmark);
+		context.SaveChanges();
 		return bookmark;
 	}
 
 	public bool DeleteBookmark(Bookmark bookmark) {
-		return _bookmarks.Remove(bookmark);
+		context.Remove(bookmark);
+		return context.SaveChanges() == 1;
 	}
 
 	public int DeleteBookmarksByUserId(Guid userId) {
-		return _bookmarks.RemoveAll(b => b.UserId == userId);
+		var bookmarks =
+		    context.Bookmarks.Where(b => b.UserId == userId).ToList();
+
+		context.Bookmarks.RemoveRange(bookmarks);
+		return context.SaveChanges();
 	}
 
 	public int DeleteBookmarksByTweetId(Guid tweetId) {
-		return _bookmarks.RemoveAll(b => b.TweetId == tweetId);
+		var bookmarks =
+		    context.Bookmarks.Where(b => b.TweetId == tweetId).ToList();
+
+		context.Bookmarks.RemoveRange(bookmarks);
+		return context.SaveChanges();
 	}
 
-	public Bookmark? GetBookmarkById(Guid id) {
-		return _bookmarks.SingleOrDefault(b => b.Id == id);
-	}
+	public Bookmark? GetBookmarkById(Guid id) =>
+	    context.Bookmarks.SingleOrDefault(b => b.Id == id);
 
-	public Bookmark? GetBookmarkByUserAndTweet(Guid userId, Guid tweetId) {
-		return _bookmarks.FirstOrDefault(b => b.UserId == userId
-		                                   && b.TweetId == tweetId);
-	}
+	public Bookmark? GetBookmarkByUserAndTweet(Guid userId, Guid tweetId) =>
+	    context.Bookmarks.FirstOrDefault(b => b.UserId == userId
+	                                       && b.TweetId == tweetId);
 
-	public List<Bookmark> GetBookmarks(Guid? userId) {
-		return [.._bookmarks.Where(b => userId == null || b.UserId == userId)
-			        .ToList()];
-	}
+	public List<Bookmark> GetBookmarks(Guid? userId) => [
+	        ..context.Bookmarks.Where(b => userId == null || b.UserId == userId)
+	        .ToList()];
 }

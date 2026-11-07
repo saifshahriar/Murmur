@@ -9,5 +9,6 @@ public interface INotificationRepository {
 	Notification? GetNotificationById(Guid id);
 	List<Notification> GetNotifications(Guid? userId, NotificationType? type,
 	                                    bool? isRead);
+	bool MarkAsRead(Notification notification);
 	int MarkAllAsReadByUserId(Guid userId);
 }

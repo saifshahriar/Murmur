@@ -1,0 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TwitterClone.Domain.Entities;
+
+namespace TwitterClone.Infrastructure.Persistence.Configurations;
+
+public class FollowConfiguration : IEntityTypeConfiguration<Follow> {
+	public void Configure(EntityTypeBuilder<Follow> builder) {
+		builder.HasKey(t => t.Id);
+		builder.Property(t => t.FollowerId).IsRequired();
+		builder.Property(t => t.FollowingId).IsRequired();
+	}
+}

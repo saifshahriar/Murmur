@@ -1,47 +1,49 @@
 using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
+using TwitterClone.Infrastructure.Persistence;
 
 namespace TwitterClone.Infrastructure.Repositories;
 
-public class MessageRepository : IMessageRepository {
-	private readonly List<Message> _messages = [];
-
+public class MessageRepository(TwitterCloneDbContext context) :
+    IMessageRepository {
 	public Message AddMessage(Message message) {
-		_messages.Add(message);
+		context.Messages.Add(message);
+		context.SaveChanges();
 		return message;
 	}
 
 	public bool DeleteMessage(Message message) {
-		return _messages.Remove(message);
+		context.Messages.Remove(message);
+		return context.SaveChanges() == 1;
 	}
 
 	public int DeleteMessagesByUserId(Guid userId) {
-		return _messages.RemoveAll(m => m.SenderId == userId
-		                                || m.RecieverId == userId);
+		var messages =
+		    context.Messages
+		        .Where(m => m.SenderId == userId || m.ReceiverId == userId)
+		        .ToList();
+
+		context.Messages.RemoveRange(messages);
+		return context.SaveChanges();
 	}
 
-	public Message? GetMessageById(Guid id) {
-		return _messages.SingleOrDefault(m => m.Id == id);
-	}
+	public Message? GetMessageById(Guid id) =>
+	    context.Messages.SingleOrDefault(m => m.Id == id);
 
-	public List<Message> GetMessages(Guid? senderId, Guid? recieverId) {
-		return [.._messages.Where(m => (senderId == null
-		                                 || m.SenderId == senderId)
-		                              && (recieverId == null
-		                                  || m.RecieverId == recieverId))];
-	}
+	public List<Message> GetMessages(Guid? senderId, Guid? recieverId) => [
+	        ..context.Messages.Where(
+	            m => (senderId == null || m.SenderId == senderId)
+	              && (recieverId == null || m.ReceiverId == recieverId))];
 
 	// Messages exchanged between two users, in either direction.
-	public List<Message> GetConversation(Guid userId, Guid otherUserId) {
-		return [.._messages.Where(m => (m.SenderId == userId
-		                                 && m.RecieverId == otherUserId)
-		                              || (m.SenderId == otherUserId
-		                                  && m.RecieverId == userId))];
-	}
+	public List<Message> GetConversation(Guid userId, Guid otherUserId) => [
+	        ..context.Messages.Where(
+	            m => (m.SenderId == userId && m.ReceiverId == otherUserId)
+	              || (m.SenderId == otherUserId && m.ReceiverId == userId))];
 
 	public Message UpdateMessage(Message message) {
-		_messages.RemoveAll(m => m.Id == message.Id);
-		_messages.Add(message);
+		context.Messages.Update(message);
+		context.SaveChanges();
 		return message;
 	}
 }
