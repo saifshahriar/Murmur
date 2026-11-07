@@ -3,10 +3,10 @@ namespace TwitterClone.Domain.Entities;
 public abstract class Notification(Guid userId, string content,
                                    NotificationType type) : BaseEntity
 (Guid.NewGuid()) {
-	public Guid             UserId { get; }            = userId;
-	public NotificationType Type { get; private set; } = type;
-	public string           Content { set; get; }      = content;
-	public bool             IsRead { get; set; }       = false;
+	public Guid             UserId { get; private set; } = userId;
+	public NotificationType Type { get; private set; }   = type;
+	public string           Content { set; get; }        = content;
+	public bool             IsRead { get; set; }         = false;
 
 	public abstract string GetMessage();
 

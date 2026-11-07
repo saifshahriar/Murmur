@@ -1,9 +1,11 @@
 namespace TwitterClone.Application.Dtos;
 
-public class CreateUserDto(string firstName, string LastName, string userName,
-                           string email) {
-	public required string FirstName { get; set; } = firstName;
-	public required string LastName { get; set; }  = LastName;
-	public required string UserName { get; set; }  = userName;
-	public required string Email { get; set; }     = email;
+public class CreateUserDto {
+	public required string FirstName { get; set; }
+	public required string LastName { get; set; }
+	public required string UserName { get; set; }
+	public required string Email { get; set; }
+
+	// The password hash is write-only - it is never returned in a UserDto.
+	public required string PasswordHash { get; set; }
 }

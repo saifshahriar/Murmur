@@ -8,4 +8,10 @@
     <ProjectReference Include="..\TwitterClone.Domain\TwitterClone.Domain.csproj"></ProjectReference>
     <ProjectReference Include="..\TwitterClone.Application\TwitterClone.Application.csproj"></ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.4" />
+  </ItemGroup>
 </Project>

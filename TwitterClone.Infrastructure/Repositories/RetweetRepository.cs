@@ -1,41 +1,49 @@
 using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
+using TwitterClone.Infrastructure.Persistence;
 
 namespace TwitterClone.Infrastructure.Repositories;
 
-public class RetweetRepository : IRetweetRepository {
-	private readonly List<Retweet> _retweets = [];
-
+public class RetweetRepository(TwitterCloneDbContext context) :
+    IRetweetRepository {
 	public Retweet AddRetweet(Retweet retweet) {
-		_retweets.Add(retweet);
+		context.Retweets.Add(retweet);
+		context.SaveChanges();
 		return retweet;
 	}
 
 	public bool DeleteRetweet(Retweet retweet) {
-		return _retweets.Remove(retweet);
+		context.Retweets.Remove(retweet);
+		return context.SaveChanges() == 1;
 	}
 
 	public int DeleteRetweetsByUserId(Guid userId) {
-		return _retweets.RemoveAll(r => r.UserId == userId);
+		var retweets =
+		    context.Retweets.Where(r => r.UserId == userId).ToList();
+
+		context.Retweets.RemoveRange(retweets);
+		return context.SaveChanges();
 	}
 
 	public int DeleteRetweetsByTweetId(Guid tweetId) {
-		return _retweets.RemoveAll(r => r.TweetId == tweetId);
+		var retweets =
+		    context.Retweets.Where(r => r.TweetId == tweetId).ToList();
+
+		context.Retweets.RemoveRange(retweets);
+		return context.SaveChanges();
 	}
 
-	public Retweet? GetRetweetById(Guid id) {
-		return _retweets.SingleOrDefault(r => r.Id == id);
-	}
+	public Retweet? GetRetweetById(Guid id) =>
+	    context.Retweets.SingleOrDefault(r => r.Id == id);
 
-	public List<Retweet> GetRetweets(Guid? userId, Guid? tweetId) {
-		return [.._retweets.Where(r => (userId == null || r.UserId == userId)
-		                               && (tweetId == null
-		                                   || r.TweetId == tweetId))];
-	}
+	public List<Retweet> GetRetweets(Guid? userId, Guid? tweetId) => [
+	        ..context.Retweets.Where(
+	            r => (userId == null || r.UserId == userId)
+	              && (tweetId == null || r.TweetId == tweetId))];
 
 	public Retweet UpdateRetweet(Retweet retweet) {
-		_retweets.RemoveAll(r => r.Id == retweet.Id);
-		_retweets.Add(retweet);
+		context.Retweets.Update(retweet);
+		context.SaveChanges();
 		return retweet;
 	}
 }

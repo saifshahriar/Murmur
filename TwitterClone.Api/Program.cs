@@ -1,6 +1,5 @@
-using TwitterClone.Application.Interfaces;
-using TwitterClone.Application.Services;
-using TwitterClone.Infrastructure.Repositories;
+using TwitterClone.Application;
+using TwitterClone.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,25 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Repo registration
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
-builder.Services.AddSingleton<ITweetRepository, TweetRepository>();
-builder.Services.AddSingleton<IBookmarkRepository, BookmarkRepository>();
-builder.Services.AddSingleton<IFollowRepository, FollowRepository>();
-builder.Services.AddSingleton<ILikeRepository, LikeRepository>();
-builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
-builder.Services.AddSingleton<INotificationRepository, NotificationRepository>();
-builder.Services.AddSingleton<IRetweetRepository, RetweetRepository>();
-
-// Services registration
-builder.Services.AddSingleton<IBookmarkService, BookmarkService>();
-builder.Services.AddSingleton<IUserService, UserService>();
-builder.Services.AddSingleton<ITweetService, TweetService>();
-builder.Services.AddSingleton<IFollowService, FollowService>();
-builder.Services.AddSingleton<ILikeService, LikeService>();
-builder.Services.AddSingleton<IMessageService, MessageService>();
-builder.Services.AddSingleton<INotificationService, NotificationService>();
-builder.Services.AddSingleton<IRetweetService, RetweetService>();
+// Clean architecture layers: each layer registers its own services.
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

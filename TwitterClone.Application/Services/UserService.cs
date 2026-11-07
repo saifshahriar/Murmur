@@ -6,12 +6,13 @@ namespace TwitterClone.Application.Services;
 
 public class UserService(IUserRepository userRepository) : IUserService {
 	public UserDto? CreateUser(CreateUserDto createUserDto) {
-		var firstName = createUserDto.FirstName;
-		var lastName  = createUserDto.LastName;
-		var userName  = createUserDto.UserName;
-		var email     = createUserDto.Email;
+		var firstName    = createUserDto.FirstName;
+		var lastName     = createUserDto.LastName;
+		var userName     = createUserDto.UserName;
+		var email        = createUserDto.Email;
+		var passwordHash = createUserDto.PasswordHash;
 
-		foreach(var e in new[] { firstName, lastName, userName, email }) {
+		foreach(var e in new[] { firstName, lastName, userName, email, passwordHash }) {
 			if (string.IsNullOrWhiteSpace(e))
 				return null;
 		}
@@ -20,7 +21,8 @@ public class UserService(IUserRepository userRepository) : IUserService {
 		    || userRepository.GetUserByUserName(userName) != null)
 			return null;
 
-		userRepository.AddUser(new User(firstName, lastName, userName, email));
+		userRepository.AddUser(new User(firstName, lastName, userName, email,
+		                                passwordHash));
 
 		return new UserDto(firstName, lastName, userName, email);
 	}

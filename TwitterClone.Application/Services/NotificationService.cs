@@ -75,7 +75,7 @@ public class NotificationService(INotificationRepository notificationRepository,
 		if (notification == null)
 			return null;
 
-		notification.IsRead = true;
+		notificationRepository.MarkAsRead(notification);
 
 		return notification.ToDto();
 	}

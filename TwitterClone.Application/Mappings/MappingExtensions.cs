@@ -53,26 +53,26 @@ public static class MappingExtensions {
 	}
 
 	public static MessageDto ToDto(this Message message) {
-		return new MessageDto { Id = message.Id, SenderId = message.SenderId,
-			                     RecieverId = message.RecieverId,
-			                     Content = message.Content,
-			                     SentAt  = message.SentAt,
-			                     IsRead  = message.IsRead };
+		return new MessageDto { Id         = message.Id,
+			                    SenderId   = message.SenderId,
+			                    RecieverId = message.ReceiverId,
+			                    Content    = message.Content,
+			                    SentAt     = message.SentAt,
+			                    IsRead     = message.IsRead };
 	}
 
 	public static NotificationDto ToDto(this Notification notification) {
-		return new NotificationDto { Id = notification.Id,
-			                         UserId = notification.UserId,
-			                         Type = notification.Type,
-			                         Content = notification.Content,
-			                         IsRead = notification.IsRead,
-			                         CreatedAt = notification.CreatedAt };
+		return new NotificationDto {
+			Id = notification.Id,         UserId = notification.UserId,
+			Type = notification.Type,     Content = notification.Content,
+			IsRead = notification.IsRead, CreatedAt = notification.CreatedAt
+		};
 	}
 
 	public static RetweetDto ToDto(this Retweet retweet) {
 		return new RetweetDto { Id = retweet.Id, UserId = retweet.UserId,
-			                     TweetId = retweet.TweetId,
-			                     Content = retweet.Content,
-			                     CreatedAt = retweet.CreatedAt };
+			                    TweetId   = retweet.TweetId,
+			                    Content   = retweet.Content,
+			                    CreatedAt = retweet.CreatedAt };
 	}
 }
