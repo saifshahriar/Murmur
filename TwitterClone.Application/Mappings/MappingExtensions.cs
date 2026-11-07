@@ -51,4 +51,12 @@ public static class MappingExtensions {
 			                 TweetId   = like.TweetId,
 			                 CreatedAt = like.CreatedAt };
 	}
+
+	public static MessageDto ToDto(this Message message) {
+		return new MessageDto { Id = message.Id, SenderId = message.SenderId,
+			                     RecieverId = message.RecieverId,
+			                     Content = message.Content,
+			                     SentAt  = message.SentAt,
+			                     IsRead  = message.IsRead };
+	}
 }
