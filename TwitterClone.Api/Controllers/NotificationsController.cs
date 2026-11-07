@@ -1,87 +1,86 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TwitterClone.Domain.Entities;
+using TwitterClone.Application.Dtos;
+using TwitterClone.Application.Interfaces;
 
 namespace TwitterClone.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class NotificationsController : ControllerBase {
+public class NotificationsController(INotificationService notificationService) :
+    ControllerBase {
+	// GET /api/notifications?userId={userId}&type={type}&isRead={isRead}
 	[HttpGet]
-	public IActionResult GetNotifications() {
-		var likeUserId = Guid.NewGuid();
-		var tweetId    = Guid.NewGuid();
-		var followerId = Guid.NewGuid();
-		var senderId   = Guid.NewGuid();
-
-		var notifications = new List<Notification> {
-			new LikeNotification(likeUserId, tweetId),
-			new FollowNotification(likeUserId, followerId),
-			new MentionNotification(likeUserId, tweetId),
-		};
-
-		return Ok(notifications);
+	[ProducesResponseType(typeof(List<NotificationDto>), StatusCodes.Status200OK)]
+	public IActionResult GetNotifications([FromQuery] Guid? userId,
+	                                      [FromQuery] string? type,
+	                                      [FromQuery] bool? isRead) {
+		return Ok(notificationService.GetNotifications(userId, type, isRead));
 	}
 
+	// GET /api/notifications/{id}
 	[HttpGet("{id:guid}")]
-	public IActionResult GetNotificationById(Guid id) {
-		var notification = (Notification)new SystemNotification(Guid.NewGuid(), "Sample system notification");
+	[ProducesResponseType(typeof(NotificationDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public IActionResult GetNotificationById([FromRoute] Guid id) {
+		var notification = notificationService.GetNotificationById(id);
+
+		if (notification == null)
+			return NotFound();
+
 		return Ok(notification);
 	}
 
+	// POST /api/notifications
 	[HttpPost]
-	public IActionResult CreateNotification([FromBody] Notification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
+	[ProducesResponseType(typeof(NotificationDto), StatusCodes.Status201Created)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public IActionResult
+	CreateNotification([FromBody] CreateNotificationDto createNotificationDto) {
+		var createdNotification =
+			notificationService.CreateNotification(createNotificationDto);
+
+		if (createdNotification == null)
+			return BadRequest();
+
+		return CreatedAtAction(nameof(GetNotificationById),
+		                       new { id = createdNotification.Id },
+		                       createdNotification);
 	}
 
-	[HttpPost("like")]
-	public IActionResult CreateLikeNotification([FromBody] LikeNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("retweet")]
-	public IActionResult CreateRetweetNotification([FromBody] RetweetNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("follow")]
-	public IActionResult CreateFollowNotification([FromBody] FollowNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("mention")]
-	public IActionResult CreateMentionNotification([FromBody] MentionNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("reply")]
-	public IActionResult CreateReplyNotification([FromBody] ReplyNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("message")]
-	public IActionResult CreateMessageNotification([FromBody] DirectMessageNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("comment")]
-	public IActionResult CreateCommentNotification([FromBody] CommentNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
-	[HttpPost("system")]
-	public IActionResult CreateSystemNotification([FromBody] SystemNotification notification) {
-		return CreatedAtAction(nameof(GetNotificationById), new { id = notification.Id }, notification);
-	}
-
+	// PATCH /api/notifications/{id}/read
 	[HttpPatch("{id:guid}/read")]
-	public IActionResult MarkAsRead(Guid id) {
-		return NoContent();
+	[ProducesResponseType(typeof(NotificationDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public IActionResult MarkNotificationAsRead([FromRoute] Guid id) {
+		var notification = notificationService.MarkNotificationAsRead(id);
+
+		if (notification == null)
+			return NotFound();
+
+		return Ok(notification);
 	}
 
+	// PATCH /api/notifications/read-all?userId={userId}
+	[HttpPatch("read-all")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public IActionResult MarkAllNotificationsAsRead([FromQuery] Guid userId) {
+		var updatedCount = notificationService.MarkAllNotificationsAsRead(userId);
+
+		return Ok(new { UserId = userId, UpdatedCount = updatedCount });
+	}
+
+	// DELETE /api/notifications/{id}
 	[HttpDelete("{id:guid}")]
-	public IActionResult DeleteNotification(Guid id) {
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public IActionResult DeleteNotification([FromRoute] Guid id) {
+		var isDeleted = notificationService.DeleteNotification(id);
+
+		if (!isDeleted)
+			return NotFound();
+
 		return NoContent();
 	}
 }

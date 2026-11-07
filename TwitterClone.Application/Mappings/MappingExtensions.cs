@@ -59,4 +59,13 @@ public static class MappingExtensions {
 			                     SentAt  = message.SentAt,
 			                     IsRead  = message.IsRead };
 	}
+
+	public static NotificationDto ToDto(this Notification notification) {
+		return new NotificationDto { Id = notification.Id,
+			                         UserId = notification.UserId,
+			                         Type = notification.Type,
+			                         Content = notification.Content,
+			                         IsRead = notification.IsRead,
+			                         CreatedAt = notification.CreatedAt };
+	}
 }
