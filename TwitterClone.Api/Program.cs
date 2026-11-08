@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using TwitterClone.Application;
 using TwitterClone.Infrastructure;
+using TwitterClone.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment()) {
 	app.UseSwagger();
 	app.UseSwaggerUI();
+}
+
+if (app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup")) {
+	using var scope = app.Services.CreateScope();
+	await     scope.ServiceProvider.GetRequiredService<TwitterCloneDbContext>()
+	    .Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();

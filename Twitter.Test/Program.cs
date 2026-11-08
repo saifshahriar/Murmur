@@ -20,9 +20,3 @@ foreach(var notification in notifications) {
 Tweet likeableTweet = new(Guid.NewGuid(), "This is another tweet!");
 Console.WriteLine($"Can be liked: {likeableTweet.CanBeLiked()}");
 Console.WriteLine();
-
-User follower = new("Saif", "Shahriar", "saifshahriar", "sh.saif@proton.me");
-User followed = new("Mehraj", "Shakil", "mehrajshakil", "mehraj@example.com");
-followed.Follow(follower.Id);
-followed.AddNotification(Guid.NewGuid());
-Console.WriteLine(followed.DescribeRecord());
