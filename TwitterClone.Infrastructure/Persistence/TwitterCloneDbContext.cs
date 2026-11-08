@@ -24,32 +24,31 @@ public class TwitterCloneDbContext(
 		// explicitly - they are not discovered from the base configuration.
 		// They share one table, discriminated by the Type column.
 		AddDerivedNotification<LikeNotification>(modelBuilder,
-			NotificationType.Like);
+		                                         NotificationType.Like);
 		AddDerivedNotification<RetweetNotification>(modelBuilder,
-			NotificationType.Retweet);
+		                                            NotificationType.Retweet);
 		AddDerivedNotification<FollowNotification>(modelBuilder,
-			NotificationType.Follow);
+		                                           NotificationType.Follow);
 		AddDerivedNotification<MentionNotification>(modelBuilder,
-			NotificationType.Mention);
+		                                            NotificationType.Mention);
 		AddDerivedNotification<ReplyNotification>(modelBuilder,
-			NotificationType.Reply);
-		AddDerivedNotification<DirectMessageNotification>(modelBuilder,
-			NotificationType.Message);
+		                                          NotificationType.Reply);
+		AddDerivedNotification<DirectMessageNotification>(
+		    modelBuilder, NotificationType.Message);
 		AddDerivedNotification<CommentNotification>(modelBuilder,
-			NotificationType.Comment);
+		                                            NotificationType.Comment);
 		AddDerivedNotification<SystemNotification>(modelBuilder,
-			NotificationType.System);
+		                                           NotificationType.System);
 	}
 
 	// Registers a notification kind as a derived type of Notification and
 	// gives it its discriminator value. The value cannot be inferred from the
 	// CLR type, because the discriminator is the Type enum property.
 	private static void AddDerivedNotification<TNotification>(
-		ModelBuilder      modelBuilder,
-		NotificationType  discriminatorValue)
-		where TNotification : Notification {
-		var builder = modelBuilder.Entity<TNotification>()
-			.HasBaseType<Notification>();
+	    ModelBuilder modelBuilder, NotificationType discriminatorValue)
+	    where TNotification : Notification {
+		var builder =
+		    modelBuilder.Entity<TNotification>().HasBaseType<Notification>();
 
 		builder.Metadata.SetDiscriminatorValue(discriminatorValue);
 	}
